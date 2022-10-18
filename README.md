@@ -1,2 +1,5 @@
-# deporte
-Seguimiento de mi actividad diaria
+# **Seguimiento de mi activdad diaria, prácticamente sólo corro.** 
+
+## **Método para dicho seguimeinto:**
+
+* Estadísticas de ***MiFit***
