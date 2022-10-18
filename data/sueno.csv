@@ -1,3 +1,3 @@
-fecha,tiempo,profundo,profundo_por,ligero_min,ligero_por,despierto_min,tiempo_vs_por,profundo_vs_por,puntuacion
-2022-10-17,06:49:00,00:01:21,20,05:28:00,80,00:00:00,8,19,83
-2022-10-18,
+fecha,tiempo,profundo,profundo_por,ligero_min,ligero_por,despierto_min,por_vs_otros,tiempo_vs_por,profundo_vs_por,puntuacion
+2022-10-17,06:49:00,00:01:21,20,05:28:00,80,00:00:00,71,8,19,83
+2022-10-18,08:28:00,02:00:00,24,06:28:00,76,00:00:00,90,28,50,90
