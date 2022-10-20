@@ -1,5 +1,6 @@
-fecha,km_recorrido,tiempo_min,ritmo_medio_min,ritmo_max_min,kcal_quemado,ritmo_cardiaco_promedio_bpm,ritmo_cardiaco_max_bpm,cadencia,zancada,actividad,pasos
-2022-10-16,10.02,01:00:43,00:06:03,00:05:10,709,154,179,151,109,correr,11013
-2022-10-17,11.26,01:07:38,00:06:28,00:06:12,774,151,170,151,102,correr,21292
-2022-10-18,7.03,00:43:42,00:06:12,00:06:00,482,153,184,153,99,correr,15911
-2022-10-19,10.02,00:57:07,00:05:41,00:05:30,708,164,176,155,110,correr,14468
+fecha,km_recorrido,tiempo_min,ritmo_medio_min,ritmo_max_min,kcal_quemado,ritmo_cardiaco_promedio_bpm,ritmo_cardiaco_max_bpm,cadencia,zancada,actividad,pasos,por_delante_porcentaje
+2022-10-16,10.02,01:00:43,00:06:03,00:05:10,709,154,179,151,109,correr,11013,77
+2022-10-17,11.26,01:07:38,00:06:28,00:06:12,774,151,170,151,102,correr,21292,97
+2022-10-18,7.03,00:43:42,00:06:12,00:06:00,482,153,184,153,99,correr,15911,91
+2022-10-19,10.02,00:57:07,00:05:41,00:05:30,708,164,176,155,110,correr,14468,88
+2022-10-20,10.01,01:03:06,00:06:17,00:06:04,731,154,154,172,104,correr,16419,92

@@ -8,6 +8,7 @@ library(readxl)
 library(glue)
 library(lubridate)
 library(ggtext)
+library(cowplot)
 
 #--------------------------------#
 # Importar y preprocesar mi data #
@@ -79,14 +80,14 @@ suenio <- read_csv(url_sueno) %>%
 
 ### Km recorridos según el día de la semana.
 
-seg_general %>%
+km <- seg_general %>%
     ggplot(aes(dia_semana, km_recorrido,fill=es_hoy,
                size=es_hoy, group=semana)) +
     geom_point(show.legend = FALSE, color="black", pch=21) +
     geom_line(size=1, show.legend = FALSE, 
               color="darkgray") +
     labs(
-        title = "Distancia (Km) de recorrido, <span style = 'color: darkgray'>todos los días</span> hasta <span style = 'color: red'>el actual</span>",
+        title = "Distancia (Km) de recorrido, <br><span style = 'color: darkgray'>todos los días</span> hasta <span style = 'color: red'>el actual</span>",
         x="Día de la semana",
         y="Distancia (Km)"
     ) +
@@ -113,11 +114,8 @@ seg_general %>%
         plot.background = element_rect(fill = "wheat", color="wheat")
     )
 
-ggsave("dist_recorrido.png", path="C:\\Users\\jcge9\\Desktop\\deporte\\graficas",
-        width = 6, height = 5)
-
 ### Tiempo de recorrido
-seg_general %>%
+tiempo <- seg_general %>%
     ggplot(aes(dia_semana,tiempo_min,fill=es_hoy,
                size=es_hoy, group=semana)) +
     geom_point(show.legend = FALSE, color="black", pch=21) +
@@ -150,7 +148,80 @@ seg_general %>%
         plot.background = element_rect(fill = "wheat", color="wheat")
     )
 
-ggsave("tiempo_recorrido.png", path="C:\\Users\\jcge9\\Desktop\\deporte\\graficas",
-        width = 6, height = 5)
 
+## Ritmo promedio 
+
+ritmo_promedio <- seg_general %>%
+    ggplot(aes(dia_semana,ritmo_medio_min,fill=es_hoy,
+               size=es_hoy, group=semana)) +
+    geom_point(show.legend = FALSE, color="black", pch=21) +
+    geom_line(size=1, show.legend = FALSE, 
+              color="darkgray") +
+    labs(
+        title = "Ritmo promedio, <span style = 'color: darkgray'>todos los días</span> hasta <span style = 'color: red'>el actual</span>",
+        x="Día de la semana",
+        y="Tiempo"
+    ) +
+    scale_y_time(
+        expand = expansion(0),
+        limits = c(0,60*10)
+    ) +
+    scale_fill_manual(
+        breaks=c(FALSE,TRUE),
+        values = c("darkgray","red")
+    ) +
+    scale_size_manual(
+        breaks = c(FALSE,TRUE),
+        values = c(2,4)
+     ) +
+     theme(
+        plot.title = element_markdown(face = "bold", size = 14),
+        axis.title = element_text(face = "bold", size = 13),
+        axis.text = element_text(color="black", size=11),
+        axis.line = element_line(),
+        panel.grid = element_blank(),
+        panel.background = element_rect(fill="white", color="white"),
+        plot.background = element_rect(fill = "wheat", color="wheat")
+    )
+
+## Ritmo máximo 
+
+ritmo_max <- seg_general %>%
+    ggplot(aes(dia_semana,ritmo_max_min,fill=es_hoy,
+               size=es_hoy, group=semana)) +
+    geom_point(show.legend = FALSE, color="black", pch=21) +
+    geom_line(size=1, show.legend = FALSE, 
+              color="darkgray") +
+    labs(
+        title = "Ritmo máximo, <span style = 'color: darkgray'>todos los días</span> hasta <span style = 'color: red'>el actual</span>",
+        x="Día de la semana",
+        y="Tiempo"
+    ) +
+    scale_y_time(
+        expand = expansion(0),
+        limits = c(0,60*10)
+    ) +
+    scale_fill_manual(
+        breaks=c(FALSE,TRUE),
+        values = c("darkgray","red")
+    ) +
+    scale_size_manual(
+        breaks = c(FALSE,TRUE),
+        values = c(2,4)
+     ) +
+     theme(
+        plot.title = element_markdown(face = "bold", size = 14),
+        axis.title = element_text(face = "bold", size = 13),
+        axis.text = element_text(color="black", size=11),
+        axis.line = element_line(),
+        panel.grid = element_blank(),
+        panel.background = element_rect(fill="white", color="white"),
+        plot.background = element_rect(fill = "wheat", color="wheat")
+    )
+
+plot_grid(km, tiempo, ritmo_promedio, ritmo_max,
+          ncol=2)
+
+ggsave("ritmo_promedio.png", path="C:\\Users\\jcge9\\Desktop\\deporte\\graficas",
+        width = 10, height = 8)
 
