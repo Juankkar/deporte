@@ -9,7 +9,7 @@ library(glue)
 library(lubridate)
 library(ggtext)
 library(hms)
-?as.hms()
+
 #--------------------------------#
 # Importar y preprocesar mi data #
 #--------------------------------#
@@ -114,8 +114,8 @@ seg_general %>%
         plot.background = element_rect(fill = "wheat", color="wheat")
     )
 
-# ggsave("dist_recorrido.png", path="C:\\Users\\jcge9\\Desktop\\deporte\\graficas",
-#        width = 6, height = 5)
+ggsave("dist_recorrido.png", path="C:\\Users\\jcge9\\Desktop\\deporte\\graficas",
+        width = 6, height = 5)
 
 ### Tiempo de recorrido
 seg_general %>%
@@ -151,7 +151,7 @@ seg_general %>%
         plot.background = element_rect(fill = "wheat", color="wheat")
     )
 
-# ggsave("tiempo_recorrido.png", path="C:\\Users\\jcge9\\Desktop\\deporte\\graficas",
-#        width = 6, height = 5)
+ggsave("tiempo_recorrido.png", path="C:\\Users\\jcge9\\Desktop\\deporte\\graficas",
+        width = 6, height = 5)
 
 
