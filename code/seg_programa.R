@@ -8,7 +8,6 @@ library(readxl)
 library(glue)
 library(lubridate)
 library(ggtext)
-library(hms)
 
 #--------------------------------#
 # Importar y preprocesar mi data #
