@@ -255,8 +255,8 @@ ritmo_max <- seg_general %>%
 plot_grid(km, tiempo, ritmo_promedio, ritmo_max,
           ncol=2)
 
-ggsave("ritmo_promedio.png", path="C:\\Users\\jcge9\\Desktop\\deporte\\graficas",
-        width = 10, height = 8)
+# ggsave("ritmo_promedio.png", path="C:\\Users\\jcge9\\Desktop\\deporte\\graficas",
+#        width = 10, height = 8)
 
 fake_etiquetas1 <- tibble(
     x=c(rep(25,9)),
@@ -295,5 +295,6 @@ fake_data1 %>%
         axis.ticks = element_blank()
     )
 
-ggsave("C:\\Users\\jcge9\\Desktop\\deporte\\graficas\\estadisticas1.png",
-       width=8, height = 6)
+# ggsave("C:\\Users\\jcge9\\Desktop\\deporte\\graficas\\estadisticas1.png",
+#       width=8, height = 6)
+
