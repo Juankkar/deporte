@@ -95,9 +95,10 @@ dias_correr_km <- seg_general %>%
 km <- seg_general %>%
     ggplot(aes(dia_semana, km_recorrido,fill=es_hoy,
                size=es_hoy, group=semana)) +
-    geom_point(show.legend = FALSE, color="black", pch=21) +
     geom_line(size=1, show.legend = FALSE, 
               color="darkgray") +
+    geom_point(show.legend = FALSE, 
+               color="black", pch=21) +
     labs(
         title = "Distancia (Km) de recorrido, <br><span style = 'color: darkgray'>todos los días</span> hasta <span style = 'color: red'>el actual</span>",
         x="Día de la semana",
@@ -137,9 +138,10 @@ estadisticos_tiempo <- seg_general %>%
 tiempo <- seg_general %>%
     ggplot(aes(dia_semana,tiempo_min,fill=es_hoy,
                size=es_hoy, group=semana)) +
-    geom_point(show.legend = FALSE, color="black", pch=21) +
     geom_line(size=1, show.legend = FALSE, 
               color="darkgray") +
+    geom_point(show.legend = FALSE, 
+               color="black", pch=21) +
     labs(
         title = "Tiempo de recorrido, <span style = 'color: darkgray'>todos los días</span> hasta <span style = 'color: red'>el actual</span>",
         x="Día de la semana",
@@ -180,9 +182,10 @@ estadisticos_ritmo <- seg_general %>%
 ritmo_promedio <- seg_general %>%
     ggplot(aes(dia_semana,ritmo_medio_min,fill=es_hoy,
                size=es_hoy, group=semana)) +
-    geom_point(show.legend = FALSE, color="black", pch=21) +
     geom_line(size=1, show.legend = FALSE, 
               color="darkgray") +
+    geom_point(show.legend = FALSE,
+               color="black", pch=21) +
     labs(
         title = "Ritmo promedio, <span style = 'color: darkgray'>todos los días</span> hasta <span style = 'color: red'>el actual</span>",
         x="Día de la semana",
@@ -222,9 +225,10 @@ estadisticos_ritmo_max <- seg_general %>%
 ritmo_max <- seg_general %>%
     ggplot(aes(dia_semana,ritmo_max_min,fill=es_hoy,
                size=es_hoy, group=semana)) +
-    geom_point(show.legend = FALSE, color="black", pch=21) +
     geom_line(size=1, show.legend = FALSE, 
               color="darkgray") +
+    geom_point(show.legend = FALSE, 
+               color="black", pch=21) +
     labs(
         title = "Ritmo máximo, <span style = 'color: darkgray'>todos los días</span> hasta <span style = 'color: red'>el actual</span>",
         x="Día de la semana",
@@ -257,6 +261,10 @@ plot_grid(km, tiempo, ritmo_promedio, ritmo_max,
 
 # ggsave("ritmo_promedio.png", path="C:\\Users\\jcge9\\Desktop\\deporte\\graficas",
 #        width = 10, height = 8)
+
+ggsave("ritmo_promedio.png", path="../graficas",
+       width = 10, height = 8)
+
 
 fake_etiquetas1 <- tibble(
     x=c(rep(25,9)),
