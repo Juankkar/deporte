@@ -295,6 +295,8 @@ fake_data1 %>%
         axis.ticks = element_blank()
     )
 
-# ggsave("C:\\Users\\jcge9\\Desktop\\deporte\\graficas\\estadisticas1.png",
+#ggsave("C:\\Users\\jcge9\\Desktop\\deporte\\graficas\\estadisticas1.png",
 #       width=8, height = 6)
 
+ggsave("../graficas/estadisticas1.png",
+       width=8, height = 6)
