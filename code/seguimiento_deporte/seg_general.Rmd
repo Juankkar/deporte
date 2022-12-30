@@ -1,0 +1,211 @@
+---
+title: "Segumiento General de mi actividad Diaria"
+author: "Juan Carlos"
+date: "2022-12-29"
+output: rmarkdown::github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+En este Markdown voy a documetar mi actividad diaria en formato markdown.
+
+## Cargar los datos:
+
+Leemos el script de R que sirve para cargar los datos en general:
+
+```{r cars, echo=FALSE}
+
+source("leerdata.R")
+
+```
+
+## Comenzaremos viendo viendo el % de los días que realizo actividad vs en los que "descanso".
+
+Calcualremos la suma y porcentaje de cada actividad que hago y posteriormente realizaremos un gráfico de barras para cada caso:
+
+```{r warning=FALSE, echo=FALSE}
+## Data wide de actividad
+tipo_actividad_wide <- seg_general %>%
+  select(actividad) %>% 
+  group_by(actividad) %>%
+  count() %>%
+  ungroup() %>%
+  mutate(suma = sum(n),
+         porcentaje=round((n/suma)*100, 2)) %>%
+  select(-suma)
+
+tipo_actividad_wide
+
+tipo_actividad_long <- tipo_actividad_wide %>% 
+  pivot_longer(-actividad, names_to = "stat", values_to = "valores") %>% 
+  arrange(stat,actividad)
+
+```
+
+* *Gráfico de barras con cada cosa**:
+
+```{r warning=FALSE, echo=FALSE}
+## Etiquetas para el número de días de actividad y descanso
+label_n_actividad <- round(tipo_actividad_wide[1,2]$n)
+label_n_descanso <- round(tipo_actividad_wide[2,2]$n)
+
+## Etiquetas para el porcentaje de días de actividad y descanso
+label_p_actividad <- tipo_actividad_wide[1,3]$porcentaje
+label_p_descanso <- tipo_actividad_wide[2,3]$porcentaje
+
+tipo_actividad_long %>% 
+  mutate(stat = factor(stat,
+                       levels = c("n", "porcentaje"),
+                       labels = c("n Actividad", "% Actividad")),
+         actividad = factor(actividad,
+                            levels = c("correr", "descanso"),
+                            labels = c("Correr", "Descanso"))) %>% 
+  ggplot(aes(actividad, valores, fill=actividad, color=actividad)) +
+  geom_bar(stat = "identity", width = .5,
+           show.legend = FALSE, color="black") +
+  facet_wrap(~stat) +
+  labs(
+    title = "Días de avtividad vs descanso",
+    subtitle = glue("n Actividad - <strong><span style = 'color: red'>Correr: {label_n_actividad}</strong></span> | <strong><span style = 'color: blue'>Descanso {label_n_descanso}</strong></span><br>% Actividad - <strong><span style = 'color: red'>Correr: {label_p_actividad}%</strong></span> | <strong><span style = 'color: blue'>Descanso {label_p_descanso}%</strong></span>"),
+    x = NULL,
+    y = NULL,
+    caption = "Autor: Juan Carlos García Estupiñán"
+  ) +
+  scale_y_continuous(expand = expansion(0),
+                     limits = c(0,100),
+                     breaks = seq(0,100,20)) +
+  scale_fill_manual(values = c("red", "blue")) +
+  theme_bw() +
+  theme(
+    plot.title = element_text(face = "bold", size = 16,
+                              margin = margin(b=10), hjust = .5),
+    plot.subtitle = element_markdown(),
+    plot.caption = element_text(face = "italic"),
+    axis.text = element_text(color = "black", size = 12),
+    axis.text.x = element_text(face = "bold"),
+    axis.ticks.x = element_blank(),
+    strip.background = element_blank(),
+    strip.text = element_text(face = "bold", size = 14, 
+                              color = "black")
+  )
+
+```
+
+## Kilómetros recorridos.
+
+### Manipulación de los datos de recorrido.
+
+Estudio descriptivo de los kilómetros recorridos.
+
+```{r warning=FALSE, echo=FALSE}
+## Filtramos los valores que queremos 
+dias_correr <- seg_general %>%
+  filter(actividad == "correr")
+
+## Histograma de la distribució de los datos
+
+dias_correr %>%
+  ggplot(aes(km_recorrido)) +
+  geom_histogram(binwidth = .6, color="black", 
+                 fill="darkgray") +
+  scale_y_continuous(expand = expansion(0)) +
+  scale_x_continuous(limits = c(4,13),
+                     breaks = seq(4,13,1)) +
+  labs(
+    title = "Distribución de los datos de los km recorridos",
+    x="Km recorridos",
+    y="Número de veces del Km"
+  ) +
+  theme_classic() +
+  theme(
+    plot.title = element_text(margin = margin(b=8), face = "bold", hjust = .5),
+    axis.title = element_text(face = "bold")
+  )
+
+## Es la distribución de los datos anteriores normal?
+km <- dias_correr$km_recorrido
+ks.test(km, "pnorm", mean=mean(km), sd=sd(km))
+
+## Estadísticos descriptivos
+# estadisticos_km <- 
+estadísticos_descriptivos <- dias_correr %>% 
+  summarise(
+    `Km Mínimo`=round(min(km_recorrido, na.rm=TRUE),2),
+    `Km Q1`=round(quantile(km_recorrido, .25),2),
+    `Km Promedio`=round(mean(km_recorrido, na.rm=TRUE),2),
+    `Desviación Km`=round(sd(km_recorrido, na.rm=TRUE),2),
+    `Km Mediana`=round(median(km_recorrido, na.rm=TRUE),2),
+    `Km Q2`=round(quantile(km_recorrido, .75),2),
+    `Km Máximo`=round(max(km_recorrido, na.rm=TRUE),2),
+    ) %>% 
+  mutate(grupo="grupo") %>% 
+  pivot_longer(-grupo, names_to = "Estadísticos", values_to = "Valor") %>% 
+  select(-grupo)
+
+print(estadísticos_descriptivos)
+
+```
+
+### Evolución de los kilómetros que corro (incluyendo los descansos)
+
+* Para ello vermos el siguiente gráfico lineal:
+
+```{r warning=FALSE, echo=FALSE}
+
+seg_general %>%
+  mutate(km_recorrido=ifelse(is.na(km_recorrido), 0, km_recorrido)) %>% 
+  ggplot(aes(fecha, km_recorrido, groups=fecha)) +
+  geom_point(pch = 21, fill="red") +
+  geom_smooth(se = FALSE) +
+  labs(
+    title = "Tendencia de los km recorridos",
+    x = "Fecha",
+    y = "Kilómetros"
+  ) +
+  theme_bw() +
+  theme(
+    plot.title = element_text(margin = margin(b=8), face = "bold", hjust = .5),
+    axis.title = element_text(face = "bold")
+  )
+```
+
+### Kilómetro recorrido por día de la semana.
+
+```{r warning=FALSE, echo=FALSE}
+
+
+seg_general %>%
+  ggplot(aes(dia_semana, km_recorrido,fill=es_hoy,
+               size=es_hoy, group=semana)) +
+  # geom_line(size=1, show.legend = FALSE,
+  #           color="darkgray") +
+  geom_point(show.legend = FALSE, alpha=.5,
+             color="black", pch=21) +
+  labs(
+      title = "Distancia (Km) de recorrido, <span style = 'color: darkgray'>todos los días</span> hasta <span style = 'color: red'>el actual</span>",
+      x="Día de la semana",
+      y="Distancia (Km)"
+  ) +
+  scale_y_continuous(expand = expansion(0),
+                     limits = c(0,20),
+                     breaks = seq(0,20,2)) +
+  scale_fill_manual(breaks=c(FALSE,TRUE),
+                    values = c("darkgray","red")) +
+  scale_size_manual(breaks = c(FALSE,TRUE),
+                    values = c(2,4)) +
+  theme(
+      plot.title = element_markdown(face = "bold", size = 14),
+      axis.title = element_text(face = "bold", size = 13),
+      axis.text = element_text(color="black", size=11),
+      axis.line = element_line(),
+      panel.grid = element_blank(),
+      panel.background = element_rect(fill="white", color="white"),
+      plot.background = element_rect(fill = "wheat", color="wheat")
+  )
+
+```
+
+
+
